@@ -1,17 +1,39 @@
 package bedolagi.strategy.impl;
 
+import bedolagi.strategy.service.HackathonService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @RequiredArgsConstructor
+@Component
 public class GeneralBuilder {
-    private char[][][] result = new char[10][10][10];
+    private char[][][] result = new char[100][100][100];
+    private List<String> words;
 
-    private final List<String> words;
+    private final HackathonService hackathonService;
+
+    @PostConstruct
+    @SneakyThrows
+    public void after() {
+
+        BufferedReader fileReader = new BufferedReader(new FileReader("src/main/resources/trash/words_only.json"));
+
+        words = fileReader
+                .lines()
+                .collect(Collectors.toList());
+
+    }
 
     public enum VertDir {
         UP, DOWN
@@ -22,17 +44,13 @@ public class GeneralBuilder {
     }
 
     public void build() {
-        //String longest = words
-        //        .stream()
-        //        .filter(x->x.length() ==5)
-        //        .findFirst()
-        //        .get();
-//
-        //placeIn(longest, 0, 0, 0, HorDir.FORWARD, null);
     }
 
     public String getCandidate(char character) {
-        return "";
+        return words.stream()
+                .filter(word -> word.contains(String.valueOf(character)))
+                .max(Comparator.comparing(String::length))
+                .orElseThrow();
     }
 
     public void placeIn(String word, int x, int y, int z, HorDir horDir, VertDir vertDir) {
