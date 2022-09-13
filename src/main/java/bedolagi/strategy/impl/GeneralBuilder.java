@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class GeneralBuilder {
-    private char[][][] result = new char[100][100][100];
+    private char[][][] result = new char[10][10][10];
 
     private final List<String> words;
 
@@ -22,36 +22,45 @@ public class GeneralBuilder {
     }
 
     public void build() {
+        //String longest = words
+        //        .stream()
+        //        .filter(x->x.length() ==5)
+        //        .findFirst()
+        //        .get();
+//
+        //placeIn(longest, 0, 0, 0, HorDir.FORWARD, null);
+    }
+
+    public String getCandidate(char character) {
+        return "";
     }
 
     public void placeIn(String word, int x, int y, int z, HorDir horDir, VertDir vertDir) {
-        int xOffset = 50;
-        int yOffset = 50;
+        int xOffset = result.length / 2;
+        int yOffset = xOffset;
 
         for (char c : word.toCharArray()) {
             result[x + xOffset][y + yOffset][z] = c;
 
-            // x change
-            if (horDir == HorDir.FORWARD) {
-                x++;
-            }
-            if (horDir == HorDir.BACK) {
-                x--;
-            }
 
-            // y change
-            if (horDir == HorDir.LEFT) {
+            if (horDir == null) {
+                // NOP
+            } else if (horDir == HorDir.FORWARD) {
+                x++;
+            } else if (horDir == HorDir.BACK) {
+                x--;
+            } else if (horDir == HorDir.LEFT) {
                 y++;
-            }
-            if (horDir == HorDir.RIGHT) {
+            } else if (horDir == HorDir.RIGHT) {
                 y--;
             }
 
             // z change
-            if (vertDir == VertDir.UP) {
+            if (vertDir == null) {
+                // NOP
+            } else if (vertDir == VertDir.UP) {
                 z++;
-            }
-            if (vertDir == VertDir.DOWN) {
+            } else if (vertDir == VertDir.DOWN) {
                 z--;
             }
         }
