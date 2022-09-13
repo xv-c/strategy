@@ -19,23 +19,16 @@ public class HackathonService {
     private String token;
     private final TowerFeignClient towerFeignClient;
 
-    private String towerId = "asdasjdha123asd";
+    private final TowerBuilderService towerBuilderService;
+
+    private String towerId = "asdasjsddha123asd";
 
     @PostConstruct
     void foo() {
 
-        List<LetterCDTO> letters = new ArrayList<>();
-
-        letters.add(new LetterCDTO(0,0,0, "к"));
-        letters.add(new LetterCDTO(1,0,0, "о"));
-        letters.add(new LetterCDTO(2,0,0, "т"));
-
-        TowerCDTO towerCDTO = TowerCDTO.builder()
-                .towerId(towerId)
-                .letters(letters)
-                .build();
+        TowerCDTO towerCDTO = towerBuilderService.buildTower(towerId);
 
 //        ResponseEntity<String> status = towerFeignClient.getStatus(token, towerId);
-        ResponseEntity<String> response = towerFeignClient.sendTower(token, towerCDTO);
+//        ResponseEntity<String> response = towerFeignClient.sendTower(token, towerCDTO);
     }
 }
